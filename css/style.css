@@ -2,23 +2,31 @@
     box-sizing: border-box;
   }
   
-  body {
-    /* height: 100vh; */
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  section {
-    display: grid;
-    grid-template-columns: repeat(3, 10vmin);
-    grid-template-rows: repeat(3, 10vmin);
-    grid-gap: 1vmin;
-  }
-  
-  section.container div {
-    border-radius: 50%;
-    border: 1px solid black;
-  }
+body {
+  /* height: 100vh; */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  display: grid;
+  grid-template-columns: repeat(3, 10vmin);
+  grid-template-rows: repeat(3, 10vmin);
+  grid-gap: 1vmin;
+  margin: 40px 0 40px 0;
+}
+
+section.gameContainer div {
+  border-radius: 25%;
+  border: 3px solid black;
+  transition: transform 0.3s ease;
+}
+
+section.gameContainer div:hover {
+  transform: scale(1.15);
+  cursor: pointer;
+
+}
