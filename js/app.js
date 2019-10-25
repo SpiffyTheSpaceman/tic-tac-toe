@@ -2,7 +2,7 @@
 // 	1.1) Define a colors object with keys of 'null' (when the square is empty), and players 1 & -1. The value assigned to each key represents the color to display for an empty square (null), player 1 and player -1.
 //1.2) Define the 8 possible winning combinations, each containing three indexes of the board that make a winner if they hold the same player value.
 const colors = {
-    null: '#00f8ff',
+    null: '#7b8778',
     '1': '#D12EC6',
     '-1': '#2ED139'
 }
@@ -20,7 +20,7 @@ let squareEls = [
 ];
 for (r=0; r < 3; r++) {
     for (c=0; c < 3; c++) {
-        squareEls[r][c] = document.getElementById(`c${c}r${r}`);
+        squareEls[r][c] = document.getElementById(`r${r}c${c}`);
     };
 };
 
@@ -43,6 +43,11 @@ function init () {
     ]
     turn = 1;
     winner = null;
+    for (r=0; r < 3; r++) {
+        for (c=0; c < 3; c++) {
+            squareEls[r][c].innerHTML = '';
+        };
+    };
     render();
 }
 
@@ -77,7 +82,7 @@ function render() {
         message.textContent = 'Sad: it is a Tie';
         message.style.backgroundColor = 'transparent';
     } else {
-        message.textContent = `CONGRATS PLAYER ${winner === 1 ? 'X' : 'O'}`;
+        message.textContent = `CONGRATS PLAYER ${winner === 1 ? 'X' : 'O'}, YOU WON!`;
         message.style.backgroundColor = colors[winner];
     }
 }
@@ -110,7 +115,7 @@ function handleClick(evt) {
                     // 	5.4) Update the board array at the index with the value of turn.
                     // 	5.5) Flip turns by multiplying turn by -1 (flips a 1 to -1, and vice-versa).
                     board[r][c] = turn;
-                    evt.target.textContent = turn === 1 ? 'X' : 'O';
+                    evt.target.innerHTML = `<p>${turn === 1 ? 'X' : 'O'}</p>`;
                     turn = turn * (-1);
                 }
                 // 	5.6) Set the winner variable if there's a winner:
