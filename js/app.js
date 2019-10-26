@@ -46,6 +46,8 @@ function init () {
     for (r=0; r < 3; r++) {
         for (c=0; c < 3; c++) {
             squareEls[r][c].innerHTML = '';
+            squareEls[r][c].classList.remove('blinking');
+            squareEls[r][c].style.animationName = '';
         };
     };
     render();
@@ -80,7 +82,7 @@ function render() {
         message.style.backgroundColor = colors[turn];
     } else if (winner === 'T') {
         message.textContent = 'Sad: it is a Tie';
-        message.style.backgroundColor = 'transparent';
+        message.style.backgroundColor = colors[null];
     } else {
         message.textContent = `CONGRATS PLAYER ${winner === 1 ? 'X' : 'O'}, YOU WON!`;
         message.style.backgroundColor = colors[winner];
@@ -125,25 +127,22 @@ function handleClick(evt) {
                 // 		5.6.4) If the total equals 3, we have a winner! Set winner to the board's value at the index specified by the first index in the combo array. Exit the loop.
             }
         };
-        // if (Math.abs(horizontalCount) === 3) {
+
         
     };
     checkWinner();
-
     render();
 }
 
 function checkWinner () {
-    let horizontalCount = 0;
-    let verticalCount = 0;
     let diagonalCount1 = 0;
     let diagonalCount2 = 0;
     let tieCount = 0;
     for (r=0; r < 3; r++) {
         diagonalCount1 += board[r][r];
         diagonalCount2 += board[2-r][r]
-        horizontalCount = 0;
-        verticalCount = 0;
+        let horizontalCount = 0;
+        let verticalCount = 0;
         if (!board[r].includes(null)) tieCount += 1;
         for (c=0; c < 3; c++) {
             horizontalCount += board[r][c];
@@ -153,6 +152,7 @@ function checkWinner () {
                 Math.abs(diagonalCount1) === 3 ||
                 Math.abs(diagonalCount2) === 3) {
                 winner = turn * (-1);
+                animateWinner(winner);
                 return;
             } 
             
@@ -161,9 +161,66 @@ function checkWinner () {
     if (tieCount === 3) {
         console.log(tieCount);
         winner = 'T';
+        animateWinner(winner);
     }
     
 }
+
+
+
+function animateWinner (player) {
+    if (player === 'T') {
+        squareEls.forEach(function (row) {
+            row.forEach(function (squareEl) {
+                squareEl.classList.add('blinking');
+                squareEl.style.animationName = 'blink-tie';
+            });
+        });
+        return;
+    }
+
+    const count = {
+        horizontal: 0,
+        vertical: 0,
+        diagonal1: 0,
+        diagonal2: 0,
+    }
+    for (r=0; r < 3; r++) {
+        count.diagonal1 += board[r][r];
+        count.diagonal2 += board[2-r][r]
+        count.horizontal = 0;
+        count.vertical = 0;
+        if (count.diagonal1 === player * 3) {
+            for (i=0; i < 3; i++) {
+                squareEls[i][i].classList.add('blinking');
+            };
+        }
+        if (count.diagonal2 === player * 3) {
+            for (i=0; i < 3; i++) {
+                squareEls[2-i][i].classList.add('blinking');
+            };
+        }
+        for (c=0; c < 3; c++) {
+            count.horizontal += board[r][c];
+            count.vertical += board[c][r];
+            if (count.horizontal === player * 3) {
+                squareEls[r].forEach (function (squareEl) {
+                    squareEl.classList.add('blinking');
+                });
+            } 
+            if (count.vertical === player * 3) {
+                squareEls.forEach(function (squareElsRow) {
+                    squareElsRow[r].classList.add('blinking');
+                });
+            }
+             
+        };
+    };
+}
+
+
+
+
 
 function handleResetClick(evt){
     init();

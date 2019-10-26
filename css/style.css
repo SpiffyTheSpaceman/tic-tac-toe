@@ -1,11 +1,16 @@
 * {
     box-sizing: border-box;
   }
+
+  :root {
+    --element-border-color: white;
+  }
   
 body {
   /* height: 100vh; */
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
+  background-color: black;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,6 +19,7 @@ body {
 
 header {
   margin-top: 20px;
+  color: white;
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 25px;
@@ -27,20 +33,26 @@ section {
   margin: 40px 0 40px 0;
   align-content: center;
   padding: 20px;
-  border: 3px solid black;
+  border: 3px solid white;
+  border-radius: 10%;
+  background: linear-gradient(#e66465, #9198e5);
   /* align-items: center; */
 }
 
+
 section.gameContainer div {
   border-radius: 25%;
-  border: 3px solid black;
-  transition: transform 0.3s ease;
+  border: 3px solid var(--element-border-color);
+  transition: transform 0.25s ease;
 }
 
 section.gameContainer div:hover {
   transform: scale(1.15);
   cursor: pointer;
+}
 
+section.gameContainer div:hover:active {
+  transform: scale(1.05);
 }
 
 div {
@@ -51,10 +63,17 @@ div {
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
+}
+div > p {
+  margin: 0;
 }
 
 h1 {
-  border-radius: 5%;
+  padding: 8px;
+  border: 3px solid black;
+  border-radius: 25px;
+  color: white;
 }
 
 button {
@@ -70,3 +89,43 @@ button:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
+
+
+
+
+
+
+.blinking {
+  animation-name: blink;
+  animation-timing-function: steps(1, start);
+  animation-duration: 1s;
+  animation-iteration-count: 4;
+}
+
+@keyframes blink {
+  from {
+    color: black;
+    /* border-color: var(--element-border-color); */
+  }
+  50% {
+    color: transparent;
+    /* border-color: transparent; */
+  }
+  100% {
+    color: black;
+    /* border-color:  var(--element-border-color); */
+  }
+}
+
+@keyframes blink-tie {
+  from {
+    border-color: var(--element-border-color);
+  }
+  50% {
+    border-color: transparent;
+  }
+  100% {
+    border-color:  var(--element-border-color);
+  }
+}
+
