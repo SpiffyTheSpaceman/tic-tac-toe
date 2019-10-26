@@ -135,22 +135,28 @@ function handleClick(evt) {
 }
 
 function checkWinner () {
-    let diagonalCount1 = 0;
-    let diagonalCount2 = 0;
-    let tieCount = 0;
+
+    const counter = {
+        horizontal: 0,
+        vertical: 0,
+        diagonal1: 0,
+        diagonal2: 0,
+        tie: 0,
+    }
+
     for (r=0; r < 3; r++) {
-        diagonalCount1 += board[r][r];
-        diagonalCount2 += board[2-r][r]
-        let horizontalCount = 0;
-        let verticalCount = 0;
-        if (!board[r].includes(null)) tieCount += 1;
+        counter.diagonal1 += board[r][r];
+        counter.diagonal2 += board[2-r][r];
+        counter.horizontal = 0;
+        counter.vertical = 0;
+        if (!board[r].includes(null)) counter.tie += 1;
         for (c=0; c < 3; c++) {
-            horizontalCount += board[r][c];
-            verticalCount += board[c][r];
-            if (Math.abs(horizontalCount) === 3 ||
-                Math.abs(verticalCount) === 3 ||
-                Math.abs(diagonalCount1) === 3 ||
-                Math.abs(diagonalCount2) === 3) {
+            counter.horizontal += board[r][c];
+            counter.vertical += board[c][r];
+            if (Math.abs(counter.horizontal) === 3 ||
+                Math.abs(counter.vertical) === 3 ||
+                Math.abs(counter.diagonal1) === 3 ||
+                Math.abs(counter.diagonal2) === 3) {
                 winner = turn * (-1);
                 animateWinner(winner);
                 return;
@@ -158,8 +164,8 @@ function checkWinner () {
             
         };
     };
-    if (tieCount === 3) {
-        console.log(tieCount);
+    if (counter.tie === 3) {
+        console.log(counter.tie);
         winner = 'T';
         animateWinner(winner);
     }
@@ -168,11 +174,13 @@ function checkWinner () {
 
 
 
+//This is my animate function. Depending on if the input argument winner is a tie or a player, it will make the element borders or X's and O's flash respectively. It does this by adding the className .blinking which will trigger a blinking animation.
 function animateWinner (player) {
     if (player === 'T') {
         squareEls.forEach(function (row) {
             row.forEach(function (squareEl) {
                 squareEl.classList.add('blinking');
+                // By default, my css animation for .blinking is set to the animation for a player victory, which is flashing the player's winning X's or O's. If it is a tie, I want it to switch to the animation I made specifically for a Tie.
                 squareEl.style.animationName = 'blink-tie';
             });
         });
